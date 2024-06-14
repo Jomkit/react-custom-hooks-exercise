@@ -12,13 +12,15 @@ const useFlip = () => {
     return [isFacingUp, toggle];
 }
 
-const useAxios = () => {
+const useAxios = (formatter) => {
     const [results, setResults] = useState([]);
     const getResponse = async (BASEURL, endpoint='') => {
         const response = await axios.get(
         BASEURL + endpoint
         );
-        setResults(results => [...results, { ...response.data, id: uuid() }]);
+        const data = formatter(response.data);
+        
+        setResults(results => [...results, { ...data, id: uuid() }]);
     };
     const resetResults = () => {
         setResults([]);
